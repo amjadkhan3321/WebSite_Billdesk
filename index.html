@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillDesk Payment Gateway - Comprehensive Integration Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="https://payments.billdesk.com/bdcollect/bdCollect/bank/customer/resources/img/BillDeskLogo.png" alt="BillDesk Logo" class="logo">
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#overview" class="nav-link">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#prerequisites" class="nav-link">Prerequisites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#authentication" class="nav-link">Authentication</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#sdk-integration" class="nav-link">SDK Integration</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#api-docs" class="nav-link">API Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#event-handling" class="nav-link">Event Handling</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">BillDesk Payment Gateway</h1>
+                <p class="hero-subtitle">Comprehensive Guide to Integrating Payment Gateway SDK in Flutter</p>
+                <p class="hero-description">
+                    BillDesk is a leading payment gateway provider that offers secure and seamless payment solutions for businesses and customers. By integrating multiple payment methods and ensuring encryption of sensitive data, BillDesk helps businesses offer a wide range of payment options while maintaining the highest level of security.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#sdk-integration" class="btn btn-primary">Get Started</a>
+                    <a href="https://www.billdesk.com/" class="btn btn-secondary" target="_blank">Visit BillDesk</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="payment-methods">
+                    <i class="fas fa-credit-card"></i>
+                    <i class="fas fa-mobile-alt"></i>
+                    <i class="fas fa-university"></i>
+                    <i class="fas fa-qrcode"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-title">Background</h2>
+            <div class="content-card">
+                <p class="text-content">
+                    This note outlines the technical integration process between the Merchant and the BillDesk platform to facilitate one-time payments using various methods such as Cards, UPI, and Net banking. It explains the specific mode and approach through which the Merchant can seamlessly connect their systems with BillDesk, enabling customers to make secure and convenient payments using different payment options.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prerequisites Section -->
+    <section id="prerequisites" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Prerequisites to Get Started</h2>
+            <div class="prerequisites-grid">
+                <div class="prerequisite-card">
+                    <div class="prerequisite-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <h3>Merchant ID</h3>
+                    <p>Obtain your Merchant ID (MID) from <a href="http://billdesk.com" target="_blank">BillDesk</a></p>
+                </div>
+                <div class="prerequisite-card">
+                    <div class="prerequisite-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Server IP Whitelist</h3>
+                    <p>Merchant's server public IP address to be whitelisted at BillDesk</p>
+                </div>
+                <div class="prerequisite-card">
+                    <div class="prerequisite-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>JWS-HMAC Authentication</h3>
+                    <p>Create Order API has to be called using JWS-HMAC for Payment SDK</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authentication Section -->
+    <section id="authentication" class="section">
+        <div class="container">
+            <h2 class="section-title">Headers and Authentication</h2>
+            <div class="content-card">
+                <p class="text-content">
+                    JWS represents signed content using JSON data structures and base64url encoding. The representation consists of three parts: the JWS Header, the JWS Payload, and the JWS Signature. The three parts are base64url-encoded for transmission, and typically represented as the concatenation of the encoded strings in that order, with the three strings being separated by period ('.') characters.
+                </p>
+                
+                <div class="auth-details">
+                    <h3>Key Features:</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-lock"></i> Peer-to-Peer communication over HTTPS (TLS1.2)</li>
+                        <li><i class="fas fa-key"></i> JWS-HMAC implementation with shared secret key</li>
+                        <li><i class="fas fa-file-code"></i> Content-Type: application/jose</li>
+                        <li><i class="fas fa-shield-alt"></i> Algorithm: HS256</li>
+                    </ul>
+                </div>
+
+                <div class="code-section">
+                    <h3>Request Headers</h3>
+                    <div class="table-container">
+                        <table class="api-table">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Content-Type</td>
+                                    <td>String</td>
+                                    <td>Request Content-Type to take the values application/jose</td>
+                                </tr>
+                                <tr>
+                                    <td>Accept</td>
+                                    <td>String</td>
+                                    <td>Accept Response Content-Type to take the values application/jose</td>
+                                </tr>
+                                <tr>
+                                    <td>BD-Traceid</td>
+                                    <td>String</td>
+                                    <td>Traceid is used for idempotency and the request with the same Traceid within the day will be rejected</td>
+                                </tr>
+                                <tr>
+                                    <td>BD-Timestamp</td>
+                                    <td>String</td>
+                                    <td>epoch timestamp of the server</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SDK Integration Section -->
+    <section id="sdk-integration" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">SDK Integration</h2>
+            
+            <div class="integration-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Integrating SDK Library in Flutter App</h3>
+                    <div class="step-content">
+                        <ol class="step-list">
+                            <li>Navigate to the directory where you want to create your merchant Flutter app</li>
+                            <li>Run the following command to create a new Flutter app:
+                                <pre><code>flutter create my_flutter_app</code></pre>
+                            </li>
+                            <li>Copy the sdk project and paste it into the root level of your directory</li>
+                            <li>Import sdk in dependency and configure the path in your <code>pubspec.yaml</code></li>
+                            <li>Add the following configuration:
+                                <pre><code>dependencies:
+  flutter:
+    sdk: flutter
+  billDeskSDK:
+    path: path/to/billDeskSDK</code></pre>
+                            </li>
+                            <li>Run the following command to fetch and install dependencies:
+                                <pre><code>flutter pub get</code></pre>
+                            </li>
+                        </ol>
+                        <div class="note">
+                            <strong>Note:</strong> Currently supporting Flutter SDK version > 2.17.0 and < 3.0.0
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Building SDKConfig</h3>
+                    <div class="step-content">
+                        <h4>Create Order API</h4>
+                        <p>This API is applicable while using the Payment SDK. Merchants must initiate the Create Order API using JWS-HMAC.</p>
+                        
+                        <div class="api-endpoint">
+                            <strong>Sandbox URL:</strong>
+                            <code>https://pguat.billdesk.io/payments/ve1_2/orders/create</code>
+                        </div>
+                        <div class="api-endpoint">
+                            <strong>HTTP Method:</strong> <code>POST</code>
+                        </div>
+
+                        <div class="code-example">
+                            <h5>Sample Request Headers:</h5>
+                            <pre><code>content-type: application/jose
+accept: application/jose
+bd-timestamp: 20200817132207
+bd-traceid: 20200817132207ABD1K</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Launching the SDK</h3>
+                    <div class="step-content">
+                        <p>After creating the order, use the response to make flowConfig and launch the SDK:</p>
+                        
+                        <div class="code-example">
+                            <h5>SDK Configuration:</h5>
+                            <pre><code>final sdkConfig = SdkConfig(
+  sdkConfigJson: SdkConfiguration.fromJson(sdkConfigMap),
+  responseHandler: responseHandler,
+  isUATEnv: false
+);
+
+Get.to(() => SDKWebView(), arguments: sdkConfig);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Documentation Section -->
+    <section id="api-docs" class="section">
+        <div class="container">
+            <h2 class="section-title">API Documentation</h2>
+            
+            <div class="api-docs-grid">
+                <div class="api-card">
+                    <h3>Create Order API Parameters</h3>
+                    <div class="table-container">
+                        <table class="api-table">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>orderid</td>
+                                    <td>Mandatory</td>
+                                    <td>Unique orderid generated by the merchant</td>
+                                </tr>
+                                <tr>
+                                    <td>mercid</td>
+                                    <td>Mandatory</td>
+                                    <td>Unique identifier as defined by BillDesk</td>
+                                </tr>
+                                <tr>
+                                    <td>order_date</td>
+                                    <td>Mandatory</td>
+                                    <td>Merchant order generation date and time</td>
+                                </tr>
+                                <tr>
+                                    <td>amount</td>
+                                    <td>Mandatory</td>
+                                    <td>Order amount in two decimals</td>
+                                </tr>
+                                <tr>
+                                    <td>currency</td>
+                                    <td>Mandatory</td>
+                                    <td>ISO currency of the transaction amount</td>
+                                </tr>
+                                <tr>
+                                    <td>ru</td>
+                                    <td>Mandatory</td>
+                                    <td>Merchant return URL</td>
+                                </tr>
+                                <tr>
+                                    <td>itemcode</td>
+                                    <td>Mandatory</td>
+                                    <td>Itemcode value as provided by BillDesk (default: DIRECT)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="api-card">
+                    <h3>Response Handling</h3>
+                    <div class="code-example">
+                        <h5>Sample Transaction Response:</h5>
+                        <pre><code>{
+  "isCancelledByUser": "Y",
+  "orderId": "yukkq8hnxcrztea8op24bk"
+}</code></pre>
+                    </div>
+                    <div class="response-notes">
+                        <ul>
+                            <li><strong>isCancelledByUser:</strong> Returns true if transaction is canceled by user</li>
+                            <li><strong>orderId:</strong> Unique identifier for the order</li>
+                            <li>Always check transaction status explicitly regardless of cancellation status</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Handling Section -->
+    <section id="event-handling" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Event Handling</h2>
+            <div class="content-card">
+                <p class="text-content">
+                    Handling callback events correctly is crucial to making sure your integration's business logic works as expected.
+                </p>
+                
+                <div class="event-guidelines">
+                    <div class="guideline-card">
+                        <h3><i class="fas fa-clock"></i> Acknowledge Events Immediately</h3>
+                        <p>If your callback script performs complex logic, or makes network calls, it's possible that the script would time out before BillDesk sees its complete execution. Ideally, your callback handler code (acknowledging receipt of an event by returning a 2xx status code) is separate of any other logic you do for that event.</p>
+                    </div>
+                    
+                    <div class="guideline-card">
+                        <h3><i class="fas fa-copy"></i> Handle Duplicate Events</h3>
+                        <p>Callback endpoints might occasionally receive the same event more than once. We advise you to guard against duplicated event receipts by making your event processing idempotent. One way of doing this is logging the events you've processed, and then not processing already-logged events.</p>
+                    </div>
+                    
+                    <div class="guideline-card">
+                        <h3><i class="fas fa-sort"></i> Order of Events</h3>
+                        <p>BillDesk does not guarantee delivery of events in the order in which they are generated. Your endpoint should not expect delivery of these events in any particular order and should handle it accordingly. You can also use the API to fetch any missing objects.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BillDesk Payment Gateway</h3>
+                    <p>Secure and seamless payment solutions for businesses and customers.</p>
+                    <div class="social-links">
+                        <a href="https://www.billdesk.com/" target="_blank"><i class="fas fa-globe"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#prerequisites">Prerequisites</a></li>
+                        <li><a href="#sdk-integration">SDK Integration</a></li>
+                        <li><a href="#api-docs">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="https://www.billdesk.com/" target="_blank">Official Website</a></li>
+                        <li><a href="#" target="_blank">Documentation</a></li>
+                        <li><a href="#" target="_blank">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BillDesk Payment Gateway. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
